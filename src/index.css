@@ -1,0 +1,67 @@
+/* Sidebar with full height */
+.sidebar {
+  margin-left: 0;
+  height: 100vh; /* Set the height to full viewport height */
+  padding: 10px 0; /* Adjust padding as needed */
+  z-index: 9999 !important;
+  background-color: #050c9c;
+}
+
+/* For mobile view only */
+@media (max-width: 768px) {
+  .sidebar {
+    margin: 0;
+    padding: 0;
+    height: 20vh;
+  }
+
+  .navbar-nav .nav-item .nav-link {
+    font-size: 0.9rem; 
+    padding: 0px 0;  
+  }
+
+  .navbar-toggler {
+    padding: 5px 10px; 
+  }
+
+  /* Make sure navbar content takes up full width and adjusts well on mobile */
+  .navbar-collapse {
+    width: 100%;
+  }
+}
+/* Sidebar active link styling */
+.nav-link.active {
+  background-color: #3572ef !important; /* Set active link color */
+}
+
+
+/* Sidebar full-width on mobile */
+@media (max-width: 991px) {
+
+  .logo {
+    width: 120px; /* Smaller logo for mobile view */
+  }
+
+  .nav-item-link {
+    font-size: 0.9rem; /* Smaller text size for mobile view */
+  }
+
+  .navbar-toggler {
+    margin-right: 29px;
+    font-size: 1rem; /* Smaller icon size for mobile view */
+  }
+
+  .sidebar {
+    width: 100%;
+    position: fixed; /* Keeps it at the top */
+    top: 0;
+    left: 0;
+    z-index: 1040; /* Ensures it stays above other content */
+  }
+
+  /* Add padding to main content so it doesn't overlap with the sidebar on mobile */
+  .main-content {
+    padding-top: 80px; /* Adjust this value based on sidebar height */
+  }
+}
+
