@@ -10,7 +10,7 @@ const EditUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://validate.tuvnorth.com/api/users/${searchId}/${searchCategory}`, {
+            const response = await fetch(`${process.env.API_URL}/users/${searchId}/${searchCategory}`, {
                 method: 'GET'
             });
             if (!response.ok) {
@@ -40,7 +40,7 @@ const EditUser = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://validate.tuvnorth.com/api/users/${userData.userid}/${userData.category}`, {
+            const response = await fetch(`${process.env.API_URL}/users/${userData.userid}/${userData.category}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

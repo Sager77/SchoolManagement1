@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-
-//dashboard content
-function Dashboard() {
+function Allusers() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 8;  // Set to 10 users per page
+  const usersPerPage = 10;  // Set to 10 users per page
 
   useEffect(() => {
     fetchUsers();
@@ -13,12 +11,12 @@ function Dashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://validate.tuvnorth.com/api/allusers');
+      const response = await fetch('${process.env.API_URL}/allusers');
       const data = await response.json();
       setUsers(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching users:', error);
-      setUsers([]);
+      setUsers([]); // Set users to an empty array on error
     }
   };
 
@@ -34,15 +32,9 @@ function Dashboard() {
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="mt-5">
-      <h1>Dashboard</h1>
-      <div className="row">
-        <div className="col-6 bg-light p-4">
-          Total Student: {users.length}
-        </div>
-        <div className="col-6 bg-light p-4">Expire Student NO: 235</div>
-      </div>
-      <table className="table table-striped">
+    <div className='mt-5'>
+      <h1>All Student</h1>
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th>#</th>
@@ -94,4 +86,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Allusers;

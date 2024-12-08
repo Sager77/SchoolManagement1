@@ -12,7 +12,7 @@ const LoginRegister = ({ onLogin }) => {
         setLoginError(''); // Reset error
 
         try {
-            const response = await fetch('http://validate.tuvnorth.com/api/login', {
+            const response = await fetch(`${process.env.API_URL}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: loginUsername, password: loginPassword }),

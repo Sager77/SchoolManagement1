@@ -30,7 +30,7 @@ const RegisterUser = () => {
         }
 
         try {
-            const response = await fetch('http://validate.tuvnorth.com/api/users', {
+            const response = await fetch( `${process.env.API_URL}/users`, {
                 method: 'POST',
                 body: formData,
                 credentials: 'include',

@@ -10,7 +10,7 @@ const UserCard = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`http://validate.tuvnorth.com/api/users/${userId}/${category}`);
+      const response = await fetch(`${process.env.API_URL}/users/${userId}/${category}`);
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
@@ -81,7 +81,7 @@ const UserCard = () => {
             </div>
             <div className="col-md-4 d-flex justify-content-center">
               <img
-                src={`http://validate.tuvnorth.com/uploads/${userData.userimage}`}
+                src={`http://localhost:5000/uploads/${userData.userimage}`}
                 alt="User"
                 className="img-fluid"
                 style={{ maxWidth: '150px' }}
