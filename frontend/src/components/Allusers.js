@@ -11,7 +11,7 @@ function Allusers() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('${process.env.API_URL}/allusers');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/allusers`);
       const data = await response.json();
       setUsers(Array.isArray(data) ? data : []);
     } catch (error) {

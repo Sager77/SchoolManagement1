@@ -10,7 +10,8 @@ const UserCard = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`${process.env.API_URL}/users/${userId}/${category}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/${category}`);
+      console.log(response);
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
