@@ -105,7 +105,6 @@ app.put('/api/users/:userId/:category', async (req, res) => {
   const { userId, category } = req.params; // Use userId to match route
   console.log("The params:", req.params); // Updated logging statement
   const updateData = req.body; // Data to update from the request body
-  
   try {
     const user = await User.findOneAndUpdate(
       { userid: userId, category }, // Ensure userId matches the field in your schema
@@ -172,7 +171,6 @@ app.post('/api/register', async (req, res) => {
 // Admin Login Route
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body)
 
   try {
     const user = await Admin.findOne({ username });
