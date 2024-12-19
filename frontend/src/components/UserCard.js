@@ -57,12 +57,13 @@ const UserCard = () => {
             required
           >
             <option value="">Select Category</option>
-            <option value="Safety Professional">Safety Professional</option>
-            <option value="Inspection Certificate">Inspection Certificate</option>
-            <option value="NDT Certificate">NDT Certificate</option>
-            <option value="Calibration Certificate">Calibration Certificate</option>
             <option value="Training Certificate">Training Certificate</option>
-            <option value="Competency Certificate">Competency Certificate</option>
+            <option value="Competency Assessment Card">Competency Assessment Card</option>
+            <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
+            <option value="Calibration Certificate">Calibration Certificate</option>
+            <option value="NDT Testing Certificate">Training Certificate</option>
+            <option value="ISO Certification Course">Competency Certificate</option>
+            <option value="Safety Professionals Course">Safety Professionals Course</option>
             <option value="Custom">Custom Category</option> {/* New option */}
           </Form.Select>
         </Form.Group>

@@ -204,7 +204,7 @@ const RegisterUser = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit">Create Student</Button>
             </Form>
         </Container>
     );
