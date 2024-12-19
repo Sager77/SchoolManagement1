@@ -29,27 +29,27 @@ function Sidebar() {
       </div>
 
       {/* Navigation links (collapsed in mobile view) */}
-      <div className="collapse navbar-collapse w-100" style={{marginTop: "-18rem"}} id="navbarSupportedContent">
+      <div className="collapse navbar-collapse w-100" style={{marginTop: "-25rem"}} id="navbarSupportedContent">
         <ul className="navbar-nav flex-column w-100">
-          <li className="nav-item">
+          <li className="nav-item mt-3">
             <NavLink
               className="nav-link text-white d-flex align-items-center"
               to="/dashboard"
               style={{ fontSize: '1.1rem', gap: '10px' }}
             >
-              <i className="fas fa-home"></i> Dashboard
+              <i className="fas fa-home"></i>Dashboard
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className="nav-item mt-3">
             <NavLink
               className="nav-link text-white d-flex align-items-center"
               to="/Allusers"
               style={{ fontSize: '1.1rem', gap: '10px' }}
             >
-              <i className="fas fa-users"></i> All Student
+              <i className="fas fa-users"></i> All Students
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className="nav-item mt-3">
             <NavLink
               className="nav-link text-white d-flex align-items-center"
               to="/edit"
@@ -58,7 +58,7 @@ function Sidebar() {
               <i className="fas fa-edit"></i> Edit Student
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className="nav-item mt-3">
             <NavLink
               className="nav-link text-white d-flex align-items-center"
               to="/register"

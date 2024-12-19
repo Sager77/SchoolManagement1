@@ -81,12 +81,13 @@ const EditUser = () => {
                         onChange={(e) => setSearchCategory(e.target.value)}
                         required
                     >
-                        <option>Safety Professional</option>
-                        <option>Inspection Certificate</option>
-                        <option>NDT Certificate</option>
-                        <option>Calibration Certificate</option>
-                        <option>Training Certificate</option>
-                        <option>Competency Certificate</option>
+                        <option value="Training Certificate">Training Certificate</option>
+                        <option value="Competency Assessment Card">Competency Assessment Card</option>
+                        <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
+                        <option value="Calibration Certificate">Calibration Certificate</option>
+                        <option value="NDT Testing Certificate">NDT Testing Certificate</option>
+                        <option value="ISO Certification Course">ISO Certification Course</option>
+                        <option value="Safety Professionals Course">Safety Professionals Course</option>
                     </select>
                 </div>
                 <button type="submit" className="btn btn-primary ms-md-3">Search</button>
@@ -147,14 +148,22 @@ const EditUser = () => {
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label>Category</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
+                                <select
+                                    className="form-select"
                                     name="category"
                                     value={userData.category || ''}
                                     onChange={handleChange}
-                                />
+                                >
+                                    <option value="Training Certificate">Training Certificate</option>
+                                    <option value="Competency Assessment Card">Competency Assessment Card</option>
+                                    <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
+                                    <option value="Calibration Certificate">Calibration Certificate</option>
+                                    <option value="NDT Testing Certificate">NDT Testing Certificate</option>
+                                    <option value="ISO Certification Course">ISO Certification Course</option>
+                                    <option value="Safety Professionals Course">Safety Professionals Course</option>
+                                </select>
                             </div>
+
                             <div className="col-md-6 mb-3">
                                 <label>Issue Date</label>
                                 <input
@@ -178,7 +187,7 @@ const EditUser = () => {
                                 />
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-success">Update</button>
+                        <button type="submit" className="btn" style={{ backgroundColor: "#050c9c", color: "white" }}>Update</button>
                     </form>
                 </div>
             )}
