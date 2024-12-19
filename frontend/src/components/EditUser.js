@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 const EditUser = () => {
     const [searchId, setSearchId] = useState('');
-    const [searchCategory, setSearchCategory] = useState('Safety Professional');
+    const [category, setCategory] = useState('');
+    const [customCategory, setCustomCategory] = useState('');
     const [userData, setUserData] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -10,14 +11,23 @@ const EditUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${searchId}/${searchCategory}`, {
-                method: 'GET'
-            });
+            // If category is custom, use the custom category value
+            const selectedCategory = category === 'Custom' ? customCategory : category;
+
+            // Make sure the API URL is correct
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/users/search?userid=${searchId}&category=${selectedCategory}`,
+                { method: 'GET' }
+            );
+
+            // Check if the response is OK
             if (!response.ok) {
                 const errorData = await response.json();
                 setErrorMessage(errorData.error || 'User not found');
                 return;
             }
+
+            // If user found, set the user data
             const data = await response.json();
             setUserData(data);
             setErrorMessage('');
@@ -40,13 +50,21 @@ const EditUser = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${userData.userid}/${userData.category}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-            });
+            const selectedCategory = userData.category === 'Custom' ? customCategory : userData.category;
+            const updatedData = { ...userData, category: selectedCategory };
+
+            // Make sure the correct API endpoint is used for updating the user
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/users/${userData.userid}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedData),
+                }
+            );
+
             if (response.ok) {
                 alert('User updated successfully!');
                 setErrorMessage('');
@@ -76,19 +94,34 @@ const EditUser = () => {
                 </div>
                 <div className="mb-3 ms-md-3">
                     <select
-                        className="form-select"
-                        value={searchCategory}
-                        onChange={(e) => setSearchCategory(e.target.value)}
+                        className="form-control"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
                         required
                     >
-                        <option>Safety Professional</option>
-                        <option>Inspection Certificate</option>
-                        <option>NDT Certificate</option>
-                        <option>Calibration Certificate</option>
-                        <option>Training Certificate</option>
-                        <option>Competency Certificate</option>
+                        <option value="">Select Category</option>
+                        <option value="Training Certificate">Training Certificate</option>
+                        <option value="Competency Assessment Card">Competency Assessment Card</option>
+                        <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
+                        <option value="Calibration Certificate">Calibration Certificate</option>
+                        <option value="NDT Testing Certificate">Training Certificate</option>
+                        <option value="ISO Certification Course">Competency Certificate</option>
+                        <option value="Safety Professionals Course">Safety Professionals Course</option>
+                        <option value="Custom">Custom Category</option> {/* New option */}
                     </select>
                 </div>
+                {category === 'Custom' && (
+                    <div className="mb-3 ms-md-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Custom Category"
+                            value={customCategory}
+                            onChange={(e) => setCustomCategory(e.target.value)}
+                            required
+                        />
+                    </div>
+                )}
                 <button type="submit" className="btn btn-primary ms-md-3">Search</button>
             </form>
 
@@ -146,16 +179,6 @@ const EditUser = () => {
                         </div>
                         <div className="row">
                             <div className="col-md-6 mb-3">
-                                <label>Category</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="category"
-                                    value={userData.category || ''}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="col-md-6 mb-3">
                                 <label>Issue Date</label>
                                 <input
                                     type="date"
@@ -165,8 +188,6 @@ const EditUser = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                        </div>
-                        <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label>End Date</label>
                                 <input
@@ -178,7 +199,36 @@ const EditUser = () => {
                                 />
                             </div>
                         </div>
-                        <button type="submit" className="btn btn-success">Update</button>
+                        <div className="mb-3">
+                            <label>Category</label>
+                            <select
+                                className="form-control"
+                                name="category"
+                                value={userData.category || ''}
+                                onChange={(e) => {
+                                    if (e.target.value === 'Custom') setCustomCategory('');
+                                    handleChange(e);
+                                }}
+                            >
+                                <option value="" disabled>Select Category</option>
+                                <option value="Student">Student</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                            {userData.category === 'Custom' && (
+                                <input
+                                    type="text"
+                                    className="form-control mt-2"
+                                    placeholder="Enter Custom Category"
+                                    value={customCategory}
+                                    onChange={(e) => setCustomCategory(e.target.value)}
+                                />
+                            )}
+                        </div>
+                        <button type="submit" className="btn" style={{ backgroundColor: '#050c9c', color: 'white' }}>
+                            Update
+                        </button>
                     </form>
                 </div>
             )}

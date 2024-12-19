@@ -5,12 +5,16 @@ import { Form } from 'react-bootstrap'; // Import Form from React-Bootstrap
 const UserCard = () => {
   const [userId, setUserId] = useState('');
   const [category, setCategory] = useState('');
+  const [customCategory, setCustomCategory] = useState(''); // New state for custom category
   const [userData, setUserData] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/${category}`);
+      const selectedCategory = category === 'Custom' ? customCategory : category; // Use customCategory if selected
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/users/${userId}/${selectedCategory}`
+      );
       console.log(response);
       if (response.ok) {
         const data = await response.json();
@@ -53,14 +57,28 @@ const UserCard = () => {
             required
           >
             <option value="">Select Category</option>
-            <option value="Safety Professional">Safety Professional</option>
-            <option value="Inspection Certificate">Inspection Certificate</option>
-            <option value="NDT Certificate">NDT Certificate</option>
-            <option value="Calibration Certificate">Calibration Certificate</option>
             <option value="Training Certificate">Training Certificate</option>
-            <option value="Competency Certificate">Competency Certificate</option>
+            <option value="Competency Assessment Card">Competency Assessment Card</option>
+            <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
+            <option value="Calibration Certificate">Calibration Certificate</option>
+            <option value="NDT Testing Certificate">Training Certificate</option>
+            <option value="ISO Certification Course">Competency Certificate</option>
+            <option value="Safety Professionals Course">Safety Professionals Course</option>
+            <option value="Custom">Custom Category</option> {/* New option */}
           </Form.Select>
         </Form.Group>
+
+        {/* Custom category input */}
+        {category === 'Custom' && (
+          <input
+            type="text"
+            placeholder="Enter Custom Category"
+            className="form-control my-2"
+            value={customCategory}
+            onChange={(e) => setCustomCategory(e.target.value)}
+            required
+          />
+        )}
 
         <button className="btn btn-primary w-100" onClick={fetchUserData}>
           Show Student Card
@@ -70,8 +88,7 @@ const UserCard = () => {
       {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
       {userData && (
-        <div
-          className="card shadow p-4 w-50 border-light-subtle">
+        <div className="card shadow p-5 border-light-subtle w-lg-100">
           <div className="row align-items-center">
             <div className="col-md-8">
               <h5 className="card-title">{userData.username}</h5>
@@ -80,7 +97,7 @@ const UserCard = () => {
               <p className="card-text"><strong>Category:</strong> {userData.category}</p>
               <p className="card-text"><strong>Issue Date:</strong> {new Date(userData.issueDate).toLocaleDateString()}</p>
             </div>
-            <div className="col-md-4 d-flex justify-content-center">
+            <div className="col-md-4 d-flex justify-content-center mt-4">
               <img
                 src={`http://localhost:5000/uploads/${userData.userimage}`}
                 alt="User"

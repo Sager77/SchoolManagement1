@@ -17,6 +17,7 @@ const LoginRegister = ({ onLogin }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: loginUsername, password: loginPassword }),
             });
+            console.log("API URL:", `${process.env.REACT_APP_API_URL}/login`);
 
             const data = await response.json();
             console.log("Login response: ", JSON.stringify(data));

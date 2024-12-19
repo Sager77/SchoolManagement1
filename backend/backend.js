@@ -21,8 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: 'https://validate.tuvnorth.com', // Update with your frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: 'http://localhost:3000', // Update with your frontend domain
   credentials: true, // If cookies are required
 }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -59,7 +58,7 @@ function authenticateToken(req, res, next) {
 
 // Routes
 
-// Route to create a new user
+
 app.post('/api/users', upload.single('userimage'), async (req, res) => {
   const { username, userid, cardno, StudenNO, category, issueDate, endDate } = req.body;
 
@@ -70,14 +69,16 @@ app.post('/api/users', upload.single('userimage'), async (req, res) => {
       return res.status(400).json({ error: 'User with this ID already exists' });
     }
 
+    
+
     // Create new user
     const newUser = new User({
       username,
       userid,
       cardno,
       StudenNO,
-      category,
-      userimage: req.file ? req.file.filename : null, // Handle absence of image
+      category, // Store category as a reference to the Category model
+      userimage: req.file ? req.file.filename : null,
       issueDate,
       endDate,
     });
@@ -89,6 +90,7 @@ app.post('/api/users', upload.single('userimage'), async (req, res) => {
     res.status(500).json({ error: 'Failed to create user' });
   }
 });
+
 
 // Route to update user data
 app.get('/api/users/:id/:category', async (req, res) => {
@@ -123,6 +125,26 @@ app.put('/api/users/:userId/:category', async (req, res) => {
 });
 
 
+//  ROUTE THAT DELETE USERS OR ONE USER
+app.delete("/api/users/:userid", async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await User.deleteOne({ userid });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: `User ${userid} deleted successfully` });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ message: "Error deleting user" });
+  }
+});
+
+
+
+
 
 
 
@@ -143,8 +165,8 @@ app.get('/api/allusers', async (req, res) => {
 //  Admin Registration Route
 // Registration Route
 app.post('/api/register', async (req, res) => {
-  const { username, password } = req.body;
-
+  const username = "Info@tuvnorth.com";
+  const password = "@tuvnorth7790@";
   // Check if the user already exists
   try {
     const existingAdmin = await Admin.findOne({ username });
@@ -161,17 +183,19 @@ app.post('/api/register', async (req, res) => {
     });
 
     await newAdmin.save();
-    res.status(201).json({ message: 'Registration successful' });
+    res.status(201).json({ message: 'Admin Registration successful' });
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ error: 'Failed to register. Please try again.' });
   }
+  res.send("Welcome");
 });
 
 
 // Admin Login Route
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body);
 
   try {
     const user = await Admin.findOne({ username });

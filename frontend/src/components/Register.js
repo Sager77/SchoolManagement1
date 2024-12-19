@@ -6,20 +6,38 @@ const RegisterUser = () => {
         username: '',
         userid: '',
         cardno: '',
-        StudenNO: '', // Ensure correct case is used here
-        category: 'Safety Professional',
+        StudenNO: '',
+        category: 'Training Certificate',
         issueDate: '',
         endDate: '',
-        userimage: null 
+        userimage: null
     };
 
     const [user, setUser] = useState(initialUserState);
+    const [categories, setCategories] = useState([
+        'Training Certificate',
+        'Competency Assessment Card',
+        'Equipment Inspection Certificate',
+        'Calibration Certificate',
+        'NDT Testing Certificate',
+        'ISO Certification Course',
+        'Safety Professionals Course',
+    ]);
+    const [additionalCategory, setAdditionalCategory] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
     const handleChange = (e) => {
         const { id, value, files } = e.target;
         setUser({ ...user, [id]: files ? files[0] : value });
+    };
+
+    const handleAddCategory = () => {
+        if (additionalCategory && !categories.includes(additionalCategory)) {
+            setCategories([...categories, additionalCategory]);
+            setUser({ ...user, category: additionalCategory });
+            setAdditionalCategory('');
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -30,7 +48,7 @@ const RegisterUser = () => {
         }
 
         try {
-            const response = await fetch( `${process.env.REACT_APP_API_URL}/users`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
                 method: 'POST',
                 body: formData,
                 credentials: 'include',
@@ -43,16 +61,12 @@ const RegisterUser = () => {
             } else {
                 const errorData = await response.json();
                 setSuccessMessage('');
-                if (errorData.error && errorData.error.toLowerCase().includes('already exists')) {
-                    setErrorMessage('User already exists!');
-                } else {
-                    setErrorMessage('Failed to register user. Please try again.');
-                }
+                setErrorMessage(errorData.error || 'Failed to register user. Please try again.');
             }
         } catch (error) {
             console.error('Registration error:', error);
             setSuccessMessage('');
-            setErrorMessage('An error occurred. Please enter valid credentials');
+            setErrorMessage('An error occurred. Please try again.');
         }
     };
 
@@ -120,15 +134,37 @@ const RegisterUser = () => {
                                 onChange={handleChange}
                                 required
                             >
-                                <option value="Safety Professional">Safety Professional</option>
-                                <option value="Inspection Certificate">Inspection Certificate</option>
-                                <option value="NDT Certificate">NDT Certificate</option>
-                                <option value="Calibration Certificate">Calibration Certificate</option>
-                                <option value="Training Certificate">Training Certificate</option>
-                                <option value="Competency Certificate">Competency Certificate</option>
+                                {categories.map((cat, index) => (
+                                    <option key={index} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
                             </Form.Select>
                         </Form.Group>
                     </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Or Add More Categories</Form.Label>
+                            <div className="d-flex">
+                                <Form.Control
+                                    id="additionalCategory"
+                                    value={additionalCategory}
+                                    onChange={(e) => setAdditionalCategory(e.target.value)}
+                                    placeholder="Add new category"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline-secondary"
+                                    onClick={handleAddCategory}
+                                    className="ms-2"
+                                >
+                                    Add
+                                </Button>
+                            </div>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
                             <Form.Label>Student Image</Form.Label>
@@ -168,7 +204,7 @@ const RegisterUser = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit">Create Student</Button>
             </Form>
         </Container>
     );

@@ -1,11 +1,20 @@
+
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 /* Sidebar with full height */
 .sidebar {
   margin-left: 0;
-  height: 100vh; /* Set the height to full viewport height */
+  height: 48rem; /* Set the height to full viewport height */
   padding: 10px 0; /* Adjust padding as needed */
   z-index: 9999 !important;
   background-color: #050c9c;
 }
+
+
 
 /* For mobile view only */
 @media (max-width: 768px) {
