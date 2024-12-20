@@ -6,28 +6,26 @@ const EditUser = () => {
     const [customCategory, setCustomCategory] = useState('');
     const [userData, setUserData] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const [showCustomCategory, setShowCustomCategory] = useState(false);
+    const [categories, setCategories] = useState([
+        "Training Certificate", "Competency Assessment Card", "Equipment Inspection Certificate", 
+        "Calibration Certificate", "NDT Testing Certificate", "ISO Certification Course", 
+        "Safety Professionals Course", "Custom"
+    ]);
 
-    // Function to handle searching for a user
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // If category is custom, use the custom category value
             const selectedCategory = category === 'Custom' ? customCategory : category;
-
-            // Make sure the API URL is correct
             const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/users/search?userid=${searchId}&category=${selectedCategory}`,
+                `${process.env.REACT_APP_API_URL}/users/${searchId}/${selectedCategory}`,
                 { method: 'GET' }
             );
-
-            // Check if the response is OK
             if (!response.ok) {
                 const errorData = await response.json();
                 setErrorMessage(errorData.error || 'User not found');
                 return;
             }
-
-            // If user found, set the user data
             const data = await response.json();
             setUserData(data);
             setErrorMessage('');
@@ -37,7 +35,6 @@ const EditUser = () => {
         }
     };
 
-    // Function to handle updates to each form field
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
@@ -46,16 +43,14 @@ const EditUser = () => {
         }));
     };
 
-    // Function to handle updating user data
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
             const selectedCategory = userData.category === 'Custom' ? customCategory : userData.category;
             const updatedData = { ...userData, category: selectedCategory };
 
-            // Make sure the correct API endpoint is used for updating the user
             const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/users/${userData.userid}`,
+                `${process.env.REACT_APP_API_URL}/users/${userData.userid}/${selectedCategory}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -78,9 +73,17 @@ const EditUser = () => {
         }
     };
 
+    const handleAddCategory = () => {
+        if (customCategory && !categories.includes(customCategory)) {
+            setCategories([...categories, customCategory]);
+            setCategory(customCategory);
+            setCustomCategory('');
+            setShowCustomCategory(false);
+        }
+    };
+
     return (
         <div>
-            {/* Search Form */}
             <form onSubmit={handleSubmit} className="d-md-flex justify-content-center align-items-center px-3 p-3 my-3 bg-light">
                 <div className="mb-3 ms-md-3">
                     <input
@@ -100,17 +103,25 @@ const EditUser = () => {
                         required
                     >
                         <option value="">Select Category</option>
-                        <option value="Training Certificate">Training Certificate</option>
-                        <option value="Competency Assessment Card">Competency Assessment Card</option>
-                        <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
-                        <option value="Calibration Certificate">Calibration Certificate</option>
-                        <option value="NDT Testing Certificate">Training Certificate</option>
-                        <option value="ISO Certification Course">Competency Certificate</option>
-                        <option value="Safety Professionals Course">Safety Professionals Course</option>
-                        <option value="Custom">Custom Category</option> {/* New option */}
+                        {categories.map((cat, index) => (
+                            <option key={index} value={cat}>{cat}</option>
+                        ))}
                     </select>
                 </div>
+
                 {category === 'Custom' && (
+                    <div className="mb-3 ms-md-3">
+                        <button 
+                            type="button" 
+                            className="btn btn-secondary"
+                            onClick={() => setShowCustomCategory(!showCustomCategory)}
+                        >
+                            {showCustomCategory ? 'Hide Custom Category' : 'Add Custom Category'}
+                        </button>
+                    </div>
+                )}
+
+                {showCustomCategory && category === 'Custom' && (
                     <div className="mb-3 ms-md-3">
                         <input
                             type="text"
@@ -120,15 +131,21 @@ const EditUser = () => {
                             onChange={(e) => setCustomCategory(e.target.value)}
                             required
                         />
+                        <button 
+                            type="button" 
+                            className="btn btn-primary mt-2" 
+                            onClick={handleAddCategory}
+                        >
+                            Add
+                        </button>
                     </div>
                 )}
+
                 <button type="submit" className="btn btn-primary ms-md-3">Search</button>
             </form>
 
-            {/* Display Error Message */}
             {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
-            {/* Display and Edit User Data */}
             {userData && (
                 <div className="mt-4">
                     <h3>Edit User Details</h3>
@@ -151,7 +168,7 @@ const EditUser = () => {
                                     className="form-control"
                                     name="userid"
                                     value={userData.userid || ''}
-                                    readOnly
+                                    disabled
                                 />
                             </div>
                         </div>
@@ -171,8 +188,8 @@ const EditUser = () => {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    name="studentno"
-                                    value={userData.studentno || ''}
+                                    name="StudenNO"
+                                    value={userData.StudenNO || ''}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -210,11 +227,10 @@ const EditUser = () => {
                                     handleChange(e);
                                 }}
                             >
-                                <option value="" disabled>Select Category</option>
-                                <option value="Student">Student</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Teacher">Teacher</option>
-                                <option value="Custom">Custom</option>
+                                <option value="">Select Category</option>
+                                {categories.map((cat, index) => (
+                                    <option key={index} value={cat}>{cat}</option>
+                                ))}
                             </select>
                             {userData.category === 'Custom' && (
                                 <input
@@ -226,9 +242,7 @@ const EditUser = () => {
                                 />
                             )}
                         </div>
-                        <button type="submit" className="btn" style={{ backgroundColor: '#050c9c', color: 'white' }}>
-                            Update
-                        </button>
+                        <button type="submit" className="btn btn-success">Update</button>
                     </form>
                 </div>
             )}
