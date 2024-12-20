@@ -61,6 +61,8 @@ const UserCard = () => {
             <option value="Competency Assessment Card">Competency Assessment Card</option>
             <option value="Equipment Inspection Certificate">Equipment Inspection Certificate</option>
             <option value="Calibration Certificate">Calibration Certificate</option>
+            <option value="Calibration Certificate">NDT Testing Certificate</option>
+            <option value="Calibration Certificate">ISO Certification Course</option>
             <option value="Safety Professionals Course">Safety Professionals Course</option>
             <option value="Custom">Custom Category</option> {/* New option */}
           </Form.Select>
