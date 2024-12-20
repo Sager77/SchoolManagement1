@@ -97,7 +97,7 @@ const UserCard = () => {
             </div>
             <div className="col-md-4 d-flex justify-content-center mt-4">
               <img
-                src={`http://localhost:5000/uploads/${userData.userimage}`}
+                src={`http://dashboard.validate.com/uploads/${userData.userimage}`}
                 alt="User"
                 className="img-fluid"
                 style={{ maxWidth: '150px' }}
