@@ -125,7 +125,7 @@ app.put('/api/users/:userId/:category', async (req, res) => {
 });
 
 
-// deletion route 
+// deletion user route 
 app.delete('/api/users/:userid', async (req, res) => {
   const { userid } = req.params;
 
