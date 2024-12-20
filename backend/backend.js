@@ -21,8 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000', // Update with your frontend domain
-  credentials: true, // If cookies are required
+  origin: 'http://localhost:3000', // Your React app running locally
+  credentials: true, // If you are sending cookies or authentication headers
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
@@ -93,10 +93,12 @@ app.post('/api/users', upload.single('userimage'), async (req, res) => {
 
 
 // Route to update user data
-app.get('/api/users/:id/:category', async (req, res) => {
-  const { id, category } = req.params;
+// Route to get user data
+app.get('/api/users/:searchId/:selectedCategory', async (req, res) => {
+  const { searchId, selectedCategory } = req.params;
   try {
-    const user = await User.findOne({ userid: id, category });
+    // Match the 'userid' field with 'searchId' and the 'category' field with 'selectedCategory'
+    const user = await User.findOne({ userid: searchId, category: selectedCategory });
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json(user);
   } catch (error) {
@@ -104,41 +106,21 @@ app.get('/api/users/:id/:category', async (req, res) => {
   }
 });
 
+// Route to update user data
 app.put('/api/users/:userId/:category', async (req, res) => {
-  const { userId, category } = req.params; // Use userId to match route
-  console.log("The params:", req.params); // Updated logging statement
+  const { userId, category } = req.params; // Route params
   const updateData = req.body; // Data to update from the request body
   try {
+    // Ensure 'userid' and 'category' are correctly matched
     const user = await User.findOneAndUpdate(
-      { userid: userId, category }, // Ensure userId matches the field in your schema
+      { userid: userId, category: category }, // Match fields with the user schema
       updateData,
-      { new: true } // This option returns the updated document
+      { new: true } // Return the updated document
     );
-
-    console.log("User found:", user);
     if (!user) return res.status(404).json({ error: 'User not found' });
-    
-    res.json(user); // Send back the updated user
+    res.json(user);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
-  }
-});
-
-
-//  ROUTE THAT DELETE USERS OR ONE USER
-app.delete("/api/users/:userid", async (req, res) => {
-  try {
-    const { userid } = req.params;
-    const result = await User.deleteOne({ userid });
-
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    return res.status(200).json({ message: `User ${userid} deleted successfully` });
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    return res.status(500).json({ message: "Error deleting user" });
   }
 });
 
