@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000', // Update with your frontend domain
+  origin: process.env.ALLOW_FRONT_END_APP_URL, // Update with your frontend domain
   credentials: true, // If cookies are required
 }));
 app.use(express.static(path.join(__dirname, 'public')));
