@@ -125,6 +125,35 @@ app.put('/api/users/:userId/:category', async (req, res) => {
 });
 
 
+// deletion route 
+app.delete('/api/users/:userid', async (req, res) => {
+  const { userid } = req.params;
+
+  try {
+    // Find and delete the user by userid
+    const deletedUser = await User.findOneAndDelete({ userid });
+
+    if (!deletedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Optionally delete associated files, such as the user image
+    if (deletedUser.userimage) {
+      const fs = require('fs');
+      const path = require('path');
+      const imagePath = path.join(__dirname, 'uploads', deletedUser.userimage);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
 
 
 
