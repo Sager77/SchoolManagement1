@@ -12,50 +12,17 @@ require('dotenv').config();
 };
 
 const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  userid: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
-  cardno: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
-  StudenNO: {
-    type: String,
-    trim: true,
-  },
-  category: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  userimage: {
-    type: String,
-    trim: true,
-  },
-  issueDate: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  endDate: {
-    type: Date,
-    default: function () {
-      let date = new Date();
-      date.setFullYear(date.getFullYear() + 1); // Set default endDate to one year from issueDate
-      return date;
-    },
-  },
+  username: { type: String, required: true },
+  userid: { type: String, required: true, unique: true },
+  cardno: { type: String, required: true },
+  StudenNO: { type: String, required: true },
+  category: { type: String, required: true },
+  userimage: { type: String },
+  certificate: { type: String },
+  issueDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
 });
+
 
 module.exports = mongoose.model('User', userSchema);
 

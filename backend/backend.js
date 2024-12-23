@@ -28,21 +28,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
 
 // Multer setup for image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
-});
 const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(new Error('Only .jpeg and .png formats are allowed!'), false);
-    }
-  },
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Set your upload directory
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
 });
+
+const uploadFields = upload.fields([
+  { name: 'userimage', maxCount: 1 },
+  { name: 'certificate', maxCount: 1 },
+]);
+
 
 // Middleware to authenticate using JWT
 function authenticateToken(req, res, next) {
@@ -58,8 +59,8 @@ function authenticateToken(req, res, next) {
 
 // Routes
 
-
-app.post('/api/users', upload.single('userimage'), async (req, res) => {
+// CREATE NEW USERS ROUTE ***
+app.post('/api/users', uploadFields, async (req, res) => {
   const { username, userid, cardno, StudenNO, category, issueDate, endDate } = req.body;
 
   try {
@@ -69,16 +70,15 @@ app.post('/api/users', upload.single('userimage'), async (req, res) => {
       return res.status(400).json({ error: 'User with this ID already exists' });
     }
 
-    
-
     // Create new user
     const newUser = new User({
       username,
       userid,
       cardno,
       StudenNO,
-      category, // Store category as a reference to the Category model
-      userimage: req.file ? req.file.filename : null,
+      category,
+      userimage: req.files.userimage ? req.files.userimage[0].filename : null,
+      certificate: req.files.certificate ? req.files.certificate[0].filename : null,
       issueDate,
       endDate,
     });
@@ -90,6 +90,7 @@ app.post('/api/users', upload.single('userimage'), async (req, res) => {
     res.status(500).json({ error: 'Failed to create user' });
   }
 });
+
 
 
 // Route to update user data
@@ -125,7 +126,7 @@ app.put('/api/users/:userId/:category', async (req, res) => {
 });
 
 
-// deletion user route 
+// deletion usersdhroute 
 app.delete('/api/users/:userid', async (req, res) => {
   const { userid } = req.params;
 
