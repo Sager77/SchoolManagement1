@@ -10,7 +10,8 @@ const RegisterUser = () => {
         category: 'Training Certificate',
         issueDate: '',
         endDate: '',
-        userimage: null
+        userimage: null,
+        certificate: null, // New field for the certificate
     };
 
     const [user, setUser] = useState(initialUserState);
@@ -55,7 +56,7 @@ const RegisterUser = () => {
             });
 
             if (response.ok) {
-                setSuccessMessage("User registered successfully!");
+                setSuccessMessage('User registered successfully!');
                 setErrorMessage('');
                 setUser(initialUserState);
             } else {
@@ -90,7 +91,7 @@ const RegisterUser = () => {
                     </Col>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Student ID</Form.Label>
+                            <Form.Label>Varification ID</Form.Label>
                             <Form.Control
                                 id="userid"
                                 value={user.userid}
@@ -173,6 +174,18 @@ const RegisterUser = () => {
                                 type="file"
                                 onChange={handleChange}
                                 accept="image/*"
+                                required
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>upload your Certificate</Form.Label>
+                            <Form.Control
+                                id="certificate"
+                                type="file"
+                                onChange={handleChange}
+                                accept=".pdf,.jpg,.png"
                                 required
                             />
                         </Form.Group>
