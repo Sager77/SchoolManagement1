@@ -46,7 +46,7 @@ function Sidebar() {
               to="/Allusers"
               style={{ fontSize: '1.1rem', gap: '10px' }}
             >
-              <i className="fas fa-users"></i> All Students
+              <i className="fas fa-users"></i> All Entries
             </NavLink>
           </li>
           <li className="nav-item mt-3">
@@ -55,7 +55,7 @@ function Sidebar() {
               to="/edit"
               style={{ fontSize: '1.1rem', gap: '10px' }}
             >
-              <i className="fas fa-edit"></i> Edit Student
+              <i className="fas fa-edit"></i> Edit Entry
             </NavLink>
           </li>
           <li className="nav-item mt-3">
@@ -64,7 +64,7 @@ function Sidebar() {
               to="/register"
               style={{ fontSize: '1.1rem', gap: '10px' }}
             >
-              <i className="fas fa-user-plus"></i> Create Student
+              <i className="fas fa-user-plus"></i> Create Entry
             </NavLink>
           </li>
         </ul>

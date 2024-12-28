@@ -79,7 +79,7 @@ function Allusers() {
       {/* Summary Row */}
       <div className="row mb-3">
         <div className="col-6 bg-light p-4">
-          <h5>Total Students: {users.length}</h5>
+          <h5>Total Entries: {users.length}</h5>
         </div>
         <div className="col-6 bg-light p-4">
           <form className="form-inline my-2 my-lg-0 d-flex">
@@ -126,8 +126,8 @@ function Allusers() {
               />
             </th>
             <th>#</th>
-            <th>Student Name</th>
-            <th>Student ID</th>
+            <th>Name</th>
+            <th>Validation ID</th>
             <th>Category</th>
           </tr>
         </thead>

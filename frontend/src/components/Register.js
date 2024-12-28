@@ -73,14 +73,14 @@ const RegisterUser = () => {
 
     return (
         <Container className="my-5 p-5 shadow w-75">
-            <h1>Register Student</h1>
+            <h1>Register</h1>
             {successMessage && <Alert variant="success">{successMessage}</Alert>}
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Student Name</Form.Label>
+                            <Form.Label>Name</Form.Label>
                             <Form.Control
                                 id="username"
                                 value={user.username}
@@ -109,7 +109,7 @@ const RegisterUser = () => {
                                 id="cardno"
                                 value={user.cardno}
                                 onChange={handleChange}
-                                required
+                                
                             />
                         </Form.Group>
                     </Col>
@@ -120,7 +120,7 @@ const RegisterUser = () => {
                                 id="StudenNO"
                                 value={user.StudenNO}
                                 onChange={handleChange}
-                                required
+                            
                             />
                         </Form.Group>
                     </Col>
@@ -174,7 +174,7 @@ const RegisterUser = () => {
                                 type="file"
                                 onChange={handleChange}
                                 accept="image/*"
-                                required
+                            
                             />
                         </Form.Group>
                     </Col>
@@ -186,7 +186,7 @@ const RegisterUser = () => {
                                 type="file"
                                 onChange={handleChange}
                                 accept=".pdf,.jpg,.png"
-                                required
+                               
                             />
                         </Form.Group>
                     </Col>
@@ -217,7 +217,7 @@ const RegisterUser = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Button type="submit">Create Student</Button>
+                <Button type="submit">Create</Button>
             </Form>
         </Container>
     );
