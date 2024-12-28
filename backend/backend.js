@@ -74,8 +74,8 @@ app.post('/api/users', uploadFields, async (req, res) => {
     const newUser = new User({
       username,
       userid,
-      cardno,
-      StudenNO,
+      cardno: '',
+      StudenNO: '',
       category,
       userimage: req.files.userimage ? req.files.userimage[0].filename : null,
       certificate: req.files.certificate ? req.files.certificate[0].filename : null,
