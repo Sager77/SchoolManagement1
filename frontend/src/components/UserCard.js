@@ -32,7 +32,7 @@ const UserCard = () => {
   };
 
   return (
-    <div className="my-md-5 d-flex flex-column align-items-center justify-content-center">
+    <div className="my-md-5 my-5 d-flex flex-column align-items-center justify-content-center">
       <img src={logo} alt="Logo" className="mb-4" style={{ width: '150px' }} />
       <h2>Validation</h2>
       <div className="container mb-4">
@@ -85,8 +85,8 @@ const UserCard = () => {
           </div>
         )}
         <div className="row">
-          <label>Select Issue Date</label>
           <div className="col-12 col-md-5 mx-auto">
+          <label>Select Issue Date</label>
             <input
               type="date"
               className="form-control my-2"
