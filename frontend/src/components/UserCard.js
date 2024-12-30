@@ -131,7 +131,7 @@ const UserCard = () => {
       <div className="col-md-4 d-flex justify-content-center mt-4">
         {userData.userimage && (
           <img
-            src={`https://validate.tuvnorth.com/uploads/${userData.userimage}`}
+            src={`http://localhost:5000/uploads/${userData.userimage}`}
             alt="User"
             className="img-fluid"
             style={{ maxWidth: '120px' }}
@@ -149,7 +149,7 @@ const UserCard = () => {
           {userData.certificate.endsWith('.pdf') ? (
             <div className="d-flex justify-content-center">
               <iframe
-                src={`https://validate.tuvnorth.com/uploads/${userData.certificate}`}
+                src={`http://localhost:5000/uploads/${userData.certificate}`}
                 title="Certificate"
                 style={{ width: '800px', height: '500px', border: 'none' }}
               ></iframe>
@@ -157,7 +157,7 @@ const UserCard = () => {
           ) : (
             <div className="d-flex justify-content-center">
               <img
-                src={`https://validate.tuvnorth.com/uploads/${userData.certificate}`}
+                src={`http://localhost:5000/uploads/${userData.certificate}`}
                 alt="Certificate"
                 className="img-fluid"
                 style={{ maxWidth: '800px', border: '1px solid #ccc' }}
