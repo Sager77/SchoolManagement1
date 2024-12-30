@@ -85,10 +85,10 @@ const UserCard = () => {
           </div>
         )}
         <div className="row">
+          <label>Select Issue Date</label>
           <div className="col-12 col-md-5 mx-auto">
             <input
               type="date"
-              placeholder="Enter Issue Date"
               className="form-control my-2"
               value={issueDate}
               onChange={(e) => setIssueDate(e.target.value)}
