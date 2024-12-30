@@ -20,7 +20,13 @@ const Admin = require('./models/Admin');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: 'https://validate.tuvnorth.com' }));
+// Use the environment variable for CORS origin
+const allowedOrigin = process.env.ALLOW_FRONT_END_APP_URL;
+
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true,
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
 
@@ -135,22 +141,44 @@ app.delete('/api/users/:userid', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Optionally delete associated files, such as the user image
+    // Log deleted user object for debugging
+    console.log('Deleted user:', deletedUser);
+
+    // Delete associated files, such as the user image and certificate
+    const fs = require('fs').promises;
+    
     if (deletedUser.userimage) {
-      const fs = require('fs');
-      const path = require('path');
       const imagePath = path.join(__dirname, 'uploads', deletedUser.userimage);
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
+      console.log('Image path:', imagePath);  // Log the path for debugging
+      try {
+        await fs.access(imagePath);  // Check if file exists
+        await fs.unlink(imagePath);  // Delete the file
+        console.log('Image deleted:', imagePath);
+      } catch (error) {
+        console.log('Error deleting image file:', error);
       }
     }
 
-    res.status(200).json({ message: 'User deleted successfully' });
+    if (deletedUser.certificate) {
+      const certPath = path.join(__dirname, 'uploads', deletedUser.certificate);
+      console.log('Certificate path:', certPath);  // Log the path for debugging
+      try {
+        await fs.access(certPath);  // Check if file exists
+        await fs.unlink(certPath);  // Delete the certificate
+        console.log('Certificate deleted:', certPath);
+      } catch (error) {
+        console.log('Error deleting certificate file:', error);
+      }
+    }
+
+    res.status(200).json({ message: 'User and associated files deleted successfully' });
   } catch (error) {
     console.error('Error deleting user:', error);
     res.status(500).json({ error: 'Failed to delete user' });
   }
 });
+
+
 
 
 
